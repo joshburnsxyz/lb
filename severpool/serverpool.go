@@ -30,6 +30,10 @@ func (s *ServerPool) GetNextPeer() *backend.Backend {
 	return nil
 }
 
+func (s *ServerPool) AddBackend(b *backend.Backend) {
+	s.backends = append(s.backends, b)
+}
+
 func New() (*ServerPool) {
 	s := ServerPool{}
 	return &s
