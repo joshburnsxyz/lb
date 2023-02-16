@@ -30,3 +30,7 @@ func (s *ServerPool) GetNextPeer() *backend.Backend {
 	return nil
 }
 
+func New() (*ServerPool) {
+	s := ServerPool{}
+	return &s
+}
