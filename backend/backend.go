@@ -7,9 +7,9 @@ import (
 )
 
 type Backend struct {
-	URL *url.URL
-	Alive bool
-	mux sync.RWMutex
+	URL          *url.URL
+	Alive        bool
+	mux          sync.RWMutex
 	ReverseProxy *httputil.ReverseProxy
 }
 
@@ -19,7 +19,7 @@ func (b *Backend) SetAlive(alive bool) {
 	b.mux.Unlock()
 }
 
-func (b *Backend) isAlive() (alive bool) {
+func (b *Backend) IsAlive() (alive bool) {
 	b.mux.RLock()
 	alive = b.Alive
 	b.mux.RUnlock()
