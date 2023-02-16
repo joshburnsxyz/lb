@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 Josh Burns
-
 */
 package cmd
 
@@ -8,10 +7,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	
-	"github.com/joshburnsxyz/pkg/backend"
 )
-
 
 var rootCmd = &cobra.Command{
 	Use:   "lb",
@@ -29,5 +25,3 @@ func Execute() {
 func init() {
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-
