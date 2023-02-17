@@ -41,14 +41,12 @@ var rootCmd = &cobra.Command{
 		// Assign handler and boot server
 		portFormat := fmt.Sprintf(":%d", port)
 		http.HandleFunc("/", serverPool.Proxy)
-		if tlsMode {
-			http.ListenAndServeTLS(portFormat, tlsCertPath, tlsKeyPath, nil)
-		} else {
-			http.ListenAndServe(portFormat, nil)
-		}
+
+		fmt.Println("RUNNING WITHOUT TLS/SSL PROTECTION")
+		http.ListenAndServe(portFormat, nil)
 
 		// Fire-off healthcheck sub-routine
-		go healthCheck(serverPool)
+		//go healthCheck(serverPool)
 	},
 }
 
