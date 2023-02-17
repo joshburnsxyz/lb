@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
 		serverPool := serverpool.New()
 
 		// Load backends into server pool
-		util.ReadBackendsFile(backendsFilePath)
+		util.ReadBackendsFile(backendsFilePath, serverPool)
 
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
@@ -63,6 +63,10 @@ func init() {
 	rootCmd.Flags().BoolVarP(&tlsMode, "tls", "t", false, "Run server in TLS (SSL) mode.")
 	rootCmd.Flags().StringVarP(&tlsCertPath, "cert", "c", "", "TLS certificate file.")
 	rootCmd.Flags().StringVarP(&tlsKeyPath, "key", "k", "", "TLS key file.")
+
+	// TCP port to bind too
 	rootCmd.Flags().IntVarP(&port, "port", "p", 80, "Port to bind too.")
+
+	// Configure backends file path
 	rootCmd.Flags().StringVarP(&backendsFilePath, "backends", "b", "/etc/lb/backends.txt", "List of URLs to backends")
 }
