@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 
 		// Load backends into server pool
 		util.LoadBackends(backendsList, serverPool)
-
+		
 	},
 }
 
