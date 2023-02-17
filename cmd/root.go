@@ -6,16 +6,13 @@ package cmd
 import (
 	"log"
 	"os"
-	"time"
 
 	"github.com/joshburnsxyz/lb/server"
 	"github.com/joshburnsxyz/lb/serverpool"
-	"github.com/joshburnsxyz/lb/util"
 	"github.com/spf13/cobra"
 )
 
 var (
-	backendsList string
 	tlsMode      bool
 	tlsCertPath  string
 	tlsKeyPath   string
@@ -35,7 +32,6 @@ var rootCmd = &cobra.Command{
 		server := server.New(serverPool, 8188)
 
 		// Load backends into server pool
-		util.LoadBackends(backendsList, serverPool)
 
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
@@ -59,9 +55,6 @@ func Execute() {
 }
 
 func init() {
-	// path to list of backends
-	rootCmd.Flags().StringVarP(&backendsList, "backends", "b", "/etc/lb/backends.txt", "List of backends")
-
 	// TLS Settings and configuration
 	rootCmd.Flags().BoolVarP(&tlsMode, "tls", "t", false, "Run server in TLS (SSL) mode.")
 	rootCmd.Flags().StringVarP(&tlsCertPath, "cert", "c", "", "TLS certificate file.")
