@@ -10,7 +10,6 @@ import (
 	"os"
 
 	"github.com/joshburnsxyz/lb/serverpool"
-	"github.com/joshburnsxyz/lb/util"
 	"github.com/spf13/cobra"
 )
 
@@ -35,7 +34,7 @@ var rootCmd = &cobra.Command{
 		serverPool := serverpool.New()
 
 		// Load backends into server pool
-		util.ReadBackendsFile(backendsFilePath, serverPool)
+		//util.ReadBackendsFile(backendsFilePath, serverPool)
 		fmt.Println("All backends loaded")
 
 		// Assign handler and boot server
