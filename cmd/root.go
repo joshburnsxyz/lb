@@ -5,17 +5,19 @@ package cmd
 
 import (
 	"log"
+	"net/url"
 	"os"
 
+	"github.com/joshburnsxyz/lb/backend"
 	"github.com/joshburnsxyz/lb/server"
 	"github.com/joshburnsxyz/lb/serverpool"
 	"github.com/spf13/cobra"
 )
 
 var (
-	tlsMode      bool
-	tlsCertPath  string
-	tlsKeyPath   string
+	tlsMode     bool
+	tlsCertPath string
+	tlsKeyPath  string
 )
 
 func healthCheck(serverPool *serverpool.ServerPool) {
@@ -32,6 +34,9 @@ var rootCmd = &cobra.Command{
 		server := server.New(serverPool, 8188)
 
 		// Load backends into server pool
+		bu1, _ := url.Parse("http://mybackend.com/1")
+		b1:= backend.Backend{URL: bu1}
+		serverPool.AddBackend(&b1)
 
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
