@@ -4,13 +4,12 @@ Copyright © 2023 Josh Burns
 package cmd
 
 import (
-	"fmt"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 
 	"github.com/joshburnsxyz/lb/backend"
-	"github.com/joshburnsxyz/lb/server"
 	"github.com/joshburnsxyz/lb/serverpool"
 	"github.com/spf13/cobra"
 )
@@ -32,7 +31,6 @@ var rootCmd = &cobra.Command{
 	Short: "Expiremental HTTP Load Balancer",
 	Run: func(cmd *cobra.Command, args []string) {
 		serverPool := serverpool.New()
-		server := server.New(serverPool, 8188)
 
 		// Load backends into server pool
 		bu1, _ := url.Parse("http://mybackend.com/1")
@@ -42,7 +40,8 @@ var rootCmd = &cobra.Command{
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
 
-		fmt.Println(server)
+		http.HandleFunc("/", serverPool.Proxy)
+		http.ListenAndServe(":8080", nil)
 	},
 }
 

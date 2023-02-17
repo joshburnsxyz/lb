@@ -40,9 +40,9 @@ func (s *ServerPool) Proxy(w http.ResponseWriter, r *http.Request) {
 	peer := s.GetNextPeer()
 	if peer != nil {
 		peer.ReverseProxy.ServeHTTP(w, r)
-		return
+	} else {
+		http.Error(w, "Service not available", http.StatusServiceUnavailable)
 	}
-	http.Error(w, "Service not available", http.StatusServiceUnavailable)
 }
 
 func (s *ServerPool) HealthCheck() {
