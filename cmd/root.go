@@ -22,10 +22,12 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		serverPool := serverpool.New()
 		server := server.New(serverPool, 8188)
-		
+
 		// Load backends into server pool
 		util.LoadBackends(backendsList, serverPool)
 		
+		// Launch server
+		server.ListenAndServe()
 	},
 }
 

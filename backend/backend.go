@@ -1,9 +1,13 @@
 package backend
 
 import (
+	"fmt"
+	"log"
+	"net"
 	"net/http/httputil"
 	"net/url"
 	"sync"
+	"time"
 )
 
 type Backend struct {
@@ -26,6 +30,17 @@ func (b *Backend) IsAlive() (alive bool) {
 	return
 }
 
-func New(url *url.URL) (*Backend) {
+func (b *Backend) Ping() (alive bool) {
+	timeout := 2 * time.Millisecond
+	conn, err := net.DialTimeout("tcp", b.URL.Host, timeout)
+	if err != nil {
+		log.Println(fmt.Sprintf("ERROR: %s", err.Error()))
+		return false
+	}
+	_ = conn.Close()
+	return true
+}
+
+func New(url *url.URL) *Backend {
 	return &Backend{URL: url}
 }
