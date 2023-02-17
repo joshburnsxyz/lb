@@ -34,7 +34,7 @@ func (b *Backend) Ping() (alive bool) {
 	timeout := 2 * time.Millisecond
 	conn, err := net.DialTimeout("tcp", b.URL.Host, timeout)
 	if err != nil {
-		log.Println(fmt.Sprintf("ERROR: %s", err.Error()))
+		log.Printf("ERROR: %s", err.Error())
 		return false
 	}
 	_ = conn.Close()

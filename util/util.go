@@ -2,7 +2,6 @@ package util
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"net/url"
 	"os"
@@ -17,7 +16,7 @@ func LoadBackends(filep string, serverPool *serverpool.ServerPool) {
 
 	readFile, err := os.Open(filep)
 	if err != nil {
-		log.Println(fmt.Sprintln("ERROR: Could not open backend list %s", err.Error()))
+		log.Printf("ERROR: %s\n", err.Error())
 	}
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
@@ -26,11 +25,11 @@ func LoadBackends(filep string, serverPool *serverpool.ServerPool) {
 		var line = fileScanner.Text()
 		url, err := url.Parse(line)
 		if err != nil {
-			log.Println(fmt.Sprintln("Could not load backend %s", line))
+			log.Printf("Could not load backend %s\n", line)
 		}
 		var newBackend = backend.New(url)
 		serverPool.AddBackend(newBackend)
-		log.Println(fmt.Sprintln("Loaded backend for %s", line))
+		log.Printf("Loaded backend for %s\n", line)
 	}
 
 	readFile.Close()
