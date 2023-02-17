@@ -4,6 +4,7 @@ Copyright © 2023 Josh Burns
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -16,6 +17,7 @@ import (
 
 var (
 	tlsMode     bool
+	port        int
 	tlsCertPath string
 	tlsKeyPath  string
 )
@@ -40,8 +42,14 @@ var rootCmd = &cobra.Command{
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
 
+		// Assign handler and boot server
+		portFormat := fmt.Sprintf(":%d", port)
 		http.HandleFunc("/", serverPool.Proxy)
-		http.ListenAndServe(":8080", nil)
+		if tlsMode {
+			http.ListenAndServeTLS(portFormat, tlsCertPath, tlsKeyPath, nil)
+		} else {
+			http.ListenAndServe(portFormat, nil)
+		}
 	},
 }
 
@@ -57,4 +65,5 @@ func init() {
 	rootCmd.Flags().BoolVarP(&tlsMode, "tls", "t", false, "Run server in TLS (SSL) mode.")
 	rootCmd.Flags().StringVarP(&tlsCertPath, "cert", "c", "", "TLS certificate file.")
 	rootCmd.Flags().StringVarP(&tlsKeyPath, "key", "k", "", "TLS key file.")
+	rootCmd.Flags().IntVarP(&port, "port", "p", 80, "Port to bind too.")
 }
