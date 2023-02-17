@@ -8,6 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	backendsList string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "lb",
 	Short: "Expiremental HTTP Load Balancer",
@@ -22,5 +26,6 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.Flags().StringVarP(&backendsList, "backends", "b", "/etc/lb/backends.txt", "List of backends")
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
