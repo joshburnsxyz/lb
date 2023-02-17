@@ -25,3 +25,7 @@ func (b *Backend) IsAlive() (alive bool) {
 	b.mux.RUnlock()
 	return
 }
+
+func New(url *url.URL) (*Backend) {
+	return &Backend{URL: url}
+}

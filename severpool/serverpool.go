@@ -35,6 +35,5 @@ func (s *ServerPool) AddBackend(b *backend.Backend) {
 }
 
 func New() (*ServerPool) {
-	s := ServerPool{}
-	return &s
+	return &ServerPool{}
 }
