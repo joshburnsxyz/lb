@@ -16,6 +16,9 @@ import (
 
 var (
 	backendsList string
+	tlsMode      bool
+	tlsCertPath  string
+	tlsKeyPath   string
 )
 
 func healthCheck(serverPool *serverpool.ServerPool) {
@@ -44,7 +47,11 @@ var rootCmd = &cobra.Command{
 		go healthCheck(serverPool)
 
 		// Launch server
-		server.ListenAndServe()
+		if tlsMode {
+			server.ListenAndServe()
+		} else {
+			server.ListenAndServeTLS(tlsCertPath, tlsKeyPath)
+		}
 	},
 }
 
@@ -56,6 +63,11 @@ func Execute() {
 }
 
 func init() {
+	// path to list of backends
 	rootCmd.Flags().StringVarP(&backendsList, "backends", "b", "/etc/lb/backends.txt", "List of backends")
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// TLS Settings and configuration
+	rootCmd.Flags().BoolVarP(&tlsMode, "tls", "t", false, "Run server in TLS (SSL) mode.")
+	rootCmd.Flags().StringVarP(&tlsCertPath, "cert", "c", "", "TLS certificate file.")
+	rootCmd.Flags().StringVarP(&tlsKeyPath, "key", "k", "", "TLS key file.")
 }
