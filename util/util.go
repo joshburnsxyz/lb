@@ -13,12 +13,11 @@ import (
 
 type FileLines []string
 
-func LoadBackends(filep string, serverPool serverpool.ServerPool) {
+func LoadBackends(filep string, serverPool *serverpool.ServerPool) {
 
 	readFile, err := os.Open(filep)
 	if err != nil {
 		log.Println(fmt.Sprintln("ERROR: Could not open backend list %s", err.Error()))
-		return nil
 	}
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)

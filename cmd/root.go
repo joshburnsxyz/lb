@@ -5,6 +5,9 @@ package cmd
 
 import (
 	"os"
+
+	"github.com/joshburnsxyz/lb/serverpool"
+	"github.com/joshburnsxyz/lb/util"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +18,13 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "lb",
 	Short: "Expiremental HTTP Load Balancer",
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		serverPool := serverpool.New()
+
+		// Load backends into server pool
+		util.LoadBackends(backendsList, serverPool)
+
+	},
 }
 
 func Execute() {
