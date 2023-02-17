@@ -8,6 +8,7 @@ import (
 
 	"github.com/joshburnsxyz/lb/serverpool"
 	"github.com/joshburnsxyz/lb/util"
+	"github.com/joshburnsxyz/lb/server"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,8 @@ var rootCmd = &cobra.Command{
 	Short: "Expiremental HTTP Load Balancer",
 	Run: func(cmd *cobra.Command, args []string) {
 		serverPool := serverpool.New()
-
+		server := server.New(serverPool, 8188)
+		
 		// Load backends into server pool
 		util.LoadBackends(backendsList, serverPool)
 		
