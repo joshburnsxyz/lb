@@ -7,19 +7,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 
-	"github.com/joshburnsxyz/lb/backend"
 	"github.com/joshburnsxyz/lb/serverpool"
+	"github.com/joshburnsxyz/lb/util"
 	"github.com/spf13/cobra"
 )
 
 var (
-	tlsMode     bool
-	port        int
-	tlsCertPath string
-	tlsKeyPath  string
+	backendsFilePath string
+	tlsMode          bool
+	port             int
+	tlsCertPath      string
+	tlsKeyPath       string
 )
 
 func healthCheck(serverPool *serverpool.ServerPool) {
@@ -35,9 +35,7 @@ var rootCmd = &cobra.Command{
 		serverPool := serverpool.New()
 
 		// Load backends into server pool
-		bu1, _ := url.Parse("http://mybackend.com/1")
-		b1 := backend.Backend{URL: bu1}
-		serverPool.AddBackend(&b1)
+		util.ReadBackendsFile(backendsFilePath)
 
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
@@ -66,4 +64,5 @@ func init() {
 	rootCmd.Flags().StringVarP(&tlsCertPath, "cert", "c", "", "TLS certificate file.")
 	rootCmd.Flags().StringVarP(&tlsKeyPath, "key", "k", "", "TLS key file.")
 	rootCmd.Flags().IntVarP(&port, "port", "p", 80, "Port to bind too.")
+	rootCmd.Flags().StringVarP(&backendsFilePath, "backends", "b", "/etc/lb/backends.txt", "List of URLs to backends")
 }
