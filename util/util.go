@@ -3,7 +3,6 @@ package util
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 
@@ -14,7 +13,7 @@ import (
 func ReadBackendsFile(filep string, serverPool *serverpool.ServerPool) {
 	file, err := os.Open(filep)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	defer file.Close()
 
@@ -23,7 +22,7 @@ func ReadBackendsFile(filep string, serverPool *serverpool.ServerPool) {
 		line := scanner.Text()
 		url, err := url.Parse(line)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		backend := backend.New(url)
 		serverPool.AddBackend(backend)
@@ -31,6 +30,6 @@ func ReadBackendsFile(filep string, serverPool *serverpool.ServerPool) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 }

@@ -36,9 +36,7 @@ var rootCmd = &cobra.Command{
 
 		// Load backends into server pool
 		util.ReadBackendsFile(backendsFilePath, serverPool)
-
-		// Fire-off healthcheck sub-routine
-		go healthCheck(serverPool)
+		fmt.Println("All backends loaded")
 
 		// Assign handler and boot server
 		portFormat := fmt.Sprintf(":%d", port)
@@ -48,6 +46,9 @@ var rootCmd = &cobra.Command{
 		} else {
 			http.ListenAndServe(portFormat, nil)
 		}
+
+		// Fire-off healthcheck sub-routine
+		go healthCheck(serverPool)
 	},
 }
 
