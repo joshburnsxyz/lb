@@ -1,6 +1,7 @@
 package serverpool
 
 import (
+	"net/http"
 	"sync/atomic"
 
 	"github.com/joshburnsxyz/lb/backend"
@@ -34,6 +35,15 @@ func (s *ServerPool) AddBackend(b *backend.Backend) {
 	s.backends = append(s.backends, b)
 }
 
-func New() (*ServerPool) {
+func (s *ServerPool) Proxy(w http.ResponseWriter, r *http.Request) {
+	peer := s.GetNextPeer()
+	if peer != nil {
+		peer.ReverseProxy.ServeHTTP(w, r)
+		return
+	}
+	http.Error(w, "Service not available", http.StatusServiceUnavailable)
+}
+
+func New() *ServerPool {
 	return &ServerPool{}
 }
