@@ -6,3 +6,6 @@ lb:
 		-v \
 		-x \
 		-o $(BIN)
+
+clean:
+	@rm -f $(BIN)
