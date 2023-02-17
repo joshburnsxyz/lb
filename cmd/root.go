@@ -49,10 +49,10 @@ var rootCmd = &cobra.Command{
 		// Launch server
 		if tlsMode {
 			log.Println("Running with TLS/SSL support")
-			server.ListenAndServe()
+			log.Fatal(server.ListenAndServe())
 		} else {
 			log.Println("Running without TLS/SSL support")
-			server.ListenAndServeTLS(tlsCertPath, tlsKeyPath)
+			log.Fatal(server.ListenAndServeTLS(tlsCertPath, tlsKeyPath))
 		}
 	},
 }
