@@ -1,6 +1,7 @@
 package serverpool
 
 import (
+	"log"
 	"net/http"
 	"sync/atomic"
 
@@ -42,6 +43,18 @@ func (s *ServerPool) Proxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Error(w, "Service not available", http.StatusServiceUnavailable)
+}
+
+func (s *ServerPool) HealthCheck() {
+	for _, b := range s.backends {
+		status := "up"
+		alive := b.Ping()
+		b.SetAlive(alive)
+		if !alive {
+			status = "down"
+		}
+		log.Printf("%s [%s]\n", b.URL, status)
+	}
 }
 
 func New() *ServerPool {
