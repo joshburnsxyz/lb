@@ -22,15 +22,9 @@ var (
 )
 
 func healthCheck(serverPool *serverpool.ServerPool) {
-	t := time.NewTicker(time.Second * 20)
-	for {
-		select {
-		case <-t.C:
-			log.Println("Starting health check...")
-			serverPool.HealthCheck()
-			log.Println("Health check completed")
-		}
-	}
+	log.Println("Starting health check...")
+	serverPool.HealthCheck()
+	log.Println("Health check completed")
 }
 
 var rootCmd = &cobra.Command{
