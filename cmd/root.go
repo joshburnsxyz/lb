@@ -4,6 +4,7 @@ Copyright © 2023 Josh Burns
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"net/url"
 	"os"
@@ -35,20 +36,13 @@ var rootCmd = &cobra.Command{
 
 		// Load backends into server pool
 		bu1, _ := url.Parse("http://mybackend.com/1")
-		b1:= backend.Backend{URL: bu1}
+		b1 := backend.Backend{URL: bu1}
 		serverPool.AddBackend(&b1)
 
 		// Fire-off healthcheck sub-routine
 		go healthCheck(serverPool)
 
-		// Launch server
-		if tlsMode {
-			log.Println("Running with TLS/SSL support")
-			log.Fatal(server.ListenAndServe())
-		} else {
-			log.Println("Running without TLS/SSL support")
-			log.Fatal(server.ListenAndServeTLS(tlsCertPath, tlsKeyPath))
-		}
+		fmt.Println(server)
 	},
 }
 

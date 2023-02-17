@@ -7,7 +7,7 @@ import (
 	"github.com/joshburnsxyz/lb/serverpool"
 )
 
-type Server = http.Server
+type Server http.Server
 
 func New(serverPool *serverpool.ServerPool, port int) *Server {
 	s := Server{
